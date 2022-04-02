@@ -3,13 +3,11 @@ package ru.internet.sergeevss90;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-
 import java.time.LocalDate;
-import java.util.Locale;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-//import static com.codeborne.selenide.Selectors.byXpath; //Для Xpath
+//import static com.codeborne.selenide.Selectors.byXpath; //если понадобится скролл
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -25,16 +23,20 @@ public class RegFormTests {
     @Test
     void execute() {
         //Блок переметров
+        LocalDate birth = LocalDate.of(1990, 1, 12);
         String firstName = "Sergei";
         String lastName = "Sergeev";
         String email = "SergeevSS90@internet.ru";
         String gender = "Male";
         String phoneNumber = "8007553535";
-        String subject = "QA Automation";
+        String subject = "English";
+        String hobby = "Music";
         String imgPath = "img/test.png";
-        LocalDate birth = LocalDate.of(1990, 01, 12);
-        String month = birth.getMonth().toString().substring(0, 1)
-                + birth.getMonth().toString().substring(1).toLowerCase(Locale.ROOT);
+        String address = "Shantipath, Chanakyapuri, New Delhi, 110021";
+        String state = "NCR";
+        String city = "Delhi";
+        String month = birth.getMonth().toString().charAt(0)
+                + birth.getMonth().toString().substring(1).toLowerCase();
 
         //Блок заполнения формы
         open("/automation-practice-form");
@@ -43,17 +45,35 @@ public class RegFormTests {
         $("#userEmail").setValue(email);
         $("#genterWrapper").$(byText(gender)).click();
         $("#userNumber").setValue(phoneNumber);
+        //$(byXpath("//*[@id='submit']")).scrollIntoView(true);       //скролл на случай маленького экрана/рекламы
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption(month);
         $(".react-datepicker__year-select").selectOption(String.valueOf(birth.getYear()));
         $("[aria-label$='" + month + " " + birth.getDayOfMonth() + "th, " + birth.getYear() + "']").click();
         //$(byXpath("//div[@class='react-datepicker__day react-datepicker__day--0" + birth.getDayOfMonth() + "']")).click();        //альтернатива через Xpath
-        $("#subjectsInput").setValue(subject);
-        $("#hobbiesWrapper").$(byText("Music")).click();
+        $("#subjectsInput").setValue(subject).pressEnter();
+        $("#hobbiesWrapper").$(byText(hobby)).click();
         $("#uploadPicture").uploadFromClasspath(imgPath);
+        $("#currentAddress").setValue(address);
+        $("#stateCity-wrapper").$(byText("Select State")).click();
+        $("#stateCity-wrapper").$(byText(state)).click();
+        $("#stateCity-wrapper").$(byText("Select City")).click();
+        $("#stateCity-wrapper").$(byText(city)).click();
+        $("#submit").click();
+
+        //Блок проверок
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        $(".modal-body").shouldHave(
+                text(firstName + " " + lastName),
+                text(email),
+                text(gender),
+                text(phoneNumber),
+                text(birth.getDayOfMonth() + " " + month + "," + birth.getYear()),
+                text(subject),
+                text(hobby),
+                text(imgPath.substring(4)),
+                text(address),
+                text(state + " " + city)
+        );
     }
 }
-
-/*
- * Блочный комментарий
- */
