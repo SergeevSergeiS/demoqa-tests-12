@@ -1,9 +1,11 @@
 package ru.internet.sergeevss90;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
@@ -37,6 +39,12 @@ public class RegFormTests {
         String city = "Delhi";
         String month = birth.getMonth().toString().charAt(0)
                 + birth.getMonth().toString().substring(1).toLowerCase();
+        SelenideElement stateCity = $("#stateCity-wrapper");
+        ArrayList<SelenideElement> actions = new ArrayList<>();
+        actions.add(stateCity.$(byText("Select State")));
+        actions.add(stateCity.$(byText(state)));
+        actions.add(stateCity.$(byText("Select City")));
+        actions.add(stateCity.$(byText(city)));
 
         //Блок заполнения формы
         open("/automation-practice-form");
@@ -55,10 +63,9 @@ public class RegFormTests {
         $("#hobbiesWrapper").$(byText(hobby)).click();
         $("#uploadPicture").uploadFromClasspath(imgPath);
         $("#currentAddress").setValue(address);
-        $("#stateCity-wrapper").$(byText("Select State")).click();
-        $("#stateCity-wrapper").$(byText(state)).click();
-        $("#stateCity-wrapper").$(byText("Select City")).click();
-        $("#stateCity-wrapper").$(byText(city)).click();
+        for (SelenideElement selenideElement : actions) {
+            selenideElement.click();
+        }
         $("#submit").click();
 
         //Блок проверок
