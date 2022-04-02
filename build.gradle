@@ -6,13 +6,10 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "",
-    junitVersion = ""
-
 dependencies {
-    testimplementation (
-        "com.codeborne:selenide:$selenideVersion",
-        "org.junit.jupiter:junit-jupiter:$junitVersion"
+    testImplementation (
+        'com.codeborne:selenide:6.3.5',
+        'org.junit.jupiter:junit-jupiter:5.8.2'
     )
 }
 
