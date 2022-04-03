@@ -25,7 +25,7 @@ public class RegFormTests {
     @Test
     void execute() {
         //Блок переметров
-        LocalDate birth = LocalDate.of(1990, 1, 12);
+        LocalDate birth = LocalDate.of(1990, 1, 12);    //дата в стандартном для Java формате
         String firstName = "Sergei";
         String lastName = "Sergeev";
         String email = "SergeevSS90@internet.ru";
@@ -37,10 +37,10 @@ public class RegFormTests {
         String address = "Shantipath, Chanakyapuri, New Delhi, 110021";
         String state = "NCR";
         String city = "Delhi";
-        String month = birth.getMonth().toString().charAt(0)
+        String month = birth.getMonth().toString().charAt(0)                 //получаем из даты название месяца
                 + birth.getMonth().toString().substring(1).toLowerCase();
-        SelenideElement stateCity = $("#stateCity-wrapper");
-        ArrayList<SelenideElement> actions = new ArrayList<>();
+        SelenideElement stateCity = $("#stateCity-wrapper");        //переменная для часто используемого селектора
+        ArrayList<SelenideElement> actions = new ArrayList<>();              // коллекция селекторов для обёртки stateCity
         actions.add(stateCity.$(byText("Select State")));
         actions.add(stateCity.$(byText(state)));
         actions.add(stateCity.$(byText("Select City")));
@@ -64,7 +64,7 @@ public class RegFormTests {
         $("#uploadPicture").uploadFromClasspath(imgPath);
         $("#currentAddress").setValue(address);
         for (SelenideElement selenideElement : actions) {
-            selenideElement.click();
+            selenideElement.click();                                //прокликиваем всю коллекцию
         }
         $("#submit").click();
 
