@@ -15,10 +15,11 @@ public class TestBase {
     @BeforeAll
     static void setUp() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
-
+        //CredentialsConfig config = ConfigFactory.create(CredentialsConfig.class);
+        String selenoidAddress = System.getProperty("selenoidUrlAddress", "selenoid.autotests.cloud/wd/hub");
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1920x1080";
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        Configuration.remote = "https://user1:1234@" + selenoidAddress;
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("enableVNC", true);
