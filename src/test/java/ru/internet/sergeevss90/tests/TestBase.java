@@ -22,8 +22,6 @@ public class TestBase {
         String selenoidAddress = System.getProperty("selenoidUrlAddress", "selenoid.autotests.cloud/wd/hub");
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1920x1080";
-        System.out.println(config.login());
-        System.out.println(config.password());
         Configuration.remote = "https://" + config.login() + ":" + config.password() + "@" + selenoidAddress;
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
